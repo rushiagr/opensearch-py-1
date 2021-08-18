@@ -39,6 +39,9 @@ if "OPENSEARCH_URL" in os.environ:
 else:
     OPENSEARCH_URL = "https://elastic:changeme@localhost:9200"
 
+print('blaaaaaaaaaa', OPENSEARCH_URL)
+print('os.environ', os.environ)
+
 CA_CERTS = join(dirname(dirname(dirname(abspath(__file__)))), ".ci/certs/ca.pem")
 
 

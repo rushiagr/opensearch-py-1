@@ -66,14 +66,20 @@ END
 
   echo -e "\033[34;1mINFO: building $CLUSTER container\033[0m"
   echo 'cluster is' $CLUSTER
+  echo 'secure integ is' $SECURE_INTEGRATION
   docker build \
     --file=.ci/$CLUSTER/Dockerfile \
-    --build-arg SECURE_INTEGRATION=false \
-    --tag=$CLUSTER \
+    --build-arg SECURE_INTEGRATION=$SECURE_INTEGRATION \
+    --tag=$CLUSTER-secure-$SECURE_INTEGRATION \
     .
 
   echo -e "\033[34;1mINFO:\033[0m Starting container $node_name \033[0m"
   set -x
+  healthcmd="curl -vvv -s --fail localhost:9200/_cluster/health || exit 1"
+  if [[ "$SECURE_INTEGRATION" == "true" ]]; then
+    healthcmd="curl -vvv -s --insecure -u admin:admin --fail https://localhost:9200/_cluster/health || exit 1"
+  fi
+
   docker run \
     --name "$node_name" \
     --network "$network_name" \
@@ -84,13 +90,13 @@ END
     --ulimit nofile=65536:65536 \
     --ulimit memlock=-1:-1 \
     --detach="$local_detach" \
-    --health-cmd="curl -vvv -s --fail $opensearch_url/_cluster/health || exit 1" \
+    --health-cmd="$(echo $healthcmd)" \
     --health-interval=2s \
     --health-retries=20 \
     --health-timeout=2s \
     --rm \
     -d \
-    $CLUSTER;
+    $CLUSTER-secure-$SECURE_INTEGRATION;
 
   set +x
   if wait_for_container "$opensearch_node_name" "$network_name"; then
