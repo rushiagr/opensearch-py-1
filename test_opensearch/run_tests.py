@@ -116,15 +116,30 @@ def run_all(argv=None):
                     "test_opensearch/test_async/test_server/",
                 ]
             )
-        if ignores:
-            argv.extend(["--ignore=%s" % ignore for ignore in ignores])
 
-        # Jenkins, only run server tests
+        # Jenkins/gihub actions, only run server tests
         if environ.get("TEST_TYPE") == "server":
             test_dir = abspath(dirname(__file__))
-            argv.append(join(test_dir, "test_server"))
-            if sys.version_info >= (3, 6):
-                argv.append(join(test_dir, "test_async/test_server"))
+            if secured:
+                argv.append(join(test_dir, "test_server_secured"))
+                ignores.extend(
+                    [
+                        "test_opensearch/test_server/",
+                        "test_opensearch/test_async/test_server/",
+                    ]
+                )
+            else:
+                argv.append(join(test_dir, "test_server"))
+                if sys.version_info >= (3, 6):
+                    argv.append(join(test_dir, "test_async/test_server"))
+                ignores.extend(
+                    [
+                        "test_opensearch/test_server_secured/",
+                    ]
+                )
+
+        if ignores:
+            argv.extend(["--ignore=%s" % ignore for ignore in ignores])
 
         # Not in CI, run all tests specified.
         else:
