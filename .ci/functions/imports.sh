@@ -12,7 +12,9 @@ if [[ -z $opensearch_node_name ]]; then
   export RUNSCRIPTS=${RUNSCRIPTS-}
   export DETACH=${DETACH-false}
   export CLEANUP=${CLEANUP-false}
+  echo 'rushi2 extensoin is' $OPENSEARCH_URL_EXTENSION
   export OPENSEARCH_URL_EXTENSION=${OPENSEARCH_URL_EXTENSION-http}
+  echo 'rushi3 extensoin is' $OPENSEARCH_URL_EXTENSION $OPENSEARCH_URL_EXTENSION
 
   export opensearch_node_name=instance
   export opensearch_image=opensearchproject/opensearch

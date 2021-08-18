@@ -13,16 +13,17 @@ on:
       - "*"
 
 jobs:
-  assemble:
-    name: Assemble
+  integration:
+    name: Integ
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         cluster: ["opendistro", "opensearch"]
+        secured: ["true", "false"]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: "./.ci/run-tests ${{ matrix.cluster }} "
-        name: Integ ${{ matrix.cluster }}
+      - run: "./.ci/run-tests ${{ matrix.cluster }} ${{ matrix.secured }}"
+        name: Integ ${{ matrix.stack_version }} ${{ matrix.cluster }} secured=${{ matrix.secured }}

@@ -45,7 +45,9 @@ def fetch_opensearch_repo():
 
     # no repo
     if not exists(repo_path) or not exists(join(repo_path, ".git")):
+        print("cloning")
         subprocess.check_call(
+            # "git clone --depth=1 https://github.com/opensearch-project/opensearch %s" % repo_path,
             "git clone https://github.com/opensearch-project/opensearch %s" % repo_path,
             shell=True,
         )
@@ -102,6 +104,9 @@ def run_all(argv=None):
             "--cache-clear",
             "-vv",
         ]
+        secured = False
+        if environ.get("OPENSEARCH_URL", "").startswith("https://"):
+            secured = True
 
         ignores = []
         # Python 3.6+ is required for async
@@ -116,15 +121,33 @@ def run_all(argv=None):
                     "test_opensearch/test_async/test_server/",
                 ]
             )
+
+        # Jenkins/gihub actions, only run server tests
+        if environ.get("TEST_TYPE") == "server":
+            print("rushii jenkins")
+            test_dir = abspath(dirname(__file__))
+            if secured:
+                print("rushii jenkins sec")
+                argv.append(join(test_dir, "test_server_secured"))
+                ignores.extend(
+                    [
+                        "test_opensearch/test_server/",
+                        "test_opensearch/test_async/test_server/",
+                    ]
+                )
+            else:
+                print("rushii jenkins unsec")
+                argv.append(join(test_dir, "test_server"))
+                if sys.version_info >= (3, 6):
+                    argv.append(join(test_dir, "test_async/test_server"))
+                ignores.extend(
+                    [
+                        "test_opensearch/test_server_secured/",
+                    ]
+                )
+
         if ignores:
             argv.extend(["--ignore=%s" % ignore for ignore in ignores])
-
-        # Jenkins, only run server tests
-        if environ.get("TEST_TYPE") == "server":
-            test_dir = abspath(dirname(__file__))
-            argv.append(join(test_dir, "test_server"))
-            if sys.version_info >= (3, 6):
-                argv.append(join(test_dir, "test_async/test_server"))
 
         # Not in CI, run all tests specified.
         else:
@@ -132,6 +155,7 @@ def run_all(argv=None):
 
     exit_code = 0
     try:
+        print("rushi running", argv)
         subprocess.check_call(argv, stdout=sys.stdout, stderr=sys.stderr)
     except subprocess.CalledProcessError as e:
         exit_code = e.returncode

@@ -50,13 +50,14 @@ def get_client(**kwargs):
         print("rushi error findig local cl")
         # fallback to using vanilla client
         try:
-            new_client = test.get_test_client(**kwargs)
+            new_client = test.get_test_client(with_security=True, **kwargs)
             print("rushi2  findig local cl")
         except SkipTest:
             print("rushi error2 findig local cl")
             client = False
             raise
 
+    print("rushi kwargs are", kwargs)
     if not kwargs:
         client = new_client
 
