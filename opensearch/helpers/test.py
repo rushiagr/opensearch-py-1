@@ -47,6 +47,7 @@ CA_CERTS = join(dirname(dirname(dirname(abspath(__file__)))), ".ci/certs/ca.pem"
 
 def get_test_client(nowait=False, with_security=False, **kwargs):
     # construct kwargs from the environment
+    print('rushi in get test cl')
     kw = {"timeout": 30, "ca_certs": CA_CERTS}
 
     if "PYTHON_CONNECTION_CLASS" in os.environ:
@@ -94,6 +95,7 @@ class OpenSearchTestCase(TestCase):
     def setup_class(cls):
         print('setting up')
         cls.client = cls._get_client()
+        print('setting up complete', cls.client)
 
     def teardown_method(self, _):
         print('tearing down')
@@ -102,6 +104,7 @@ class OpenSearchTestCase(TestCase):
         if self.opensearch_version() >= (1, 0):
             expand_wildcards.append("hidden")
 
+        print('tearing down dleting ', cls.client)
         self.client.indices.delete(
             index="*", ignore=404, expand_wildcards=expand_wildcards
         )
