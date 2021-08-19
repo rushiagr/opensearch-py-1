@@ -92,9 +92,11 @@ class OpenSearchTestCase(TestCase):
 
     @classmethod
     def setup_class(cls):
+        print('setting up')
         cls.client = cls._get_client()
 
     def teardown_method(self, _):
+        print('tearing down')
         # Hidden indices expanded in wildcards in ES 7.7
         expand_wildcards = ["open", "closed"]
         if self.opensearch_version() >= (1, 0):
