@@ -45,7 +45,7 @@ async def async_client():
 
         kw = {"timeout": 3, "ca_certs": CA_CERTS}
         print('rushi open search url is', OPENSEARCH_URL)
-        pytest.skip("OpenSearch failed to start."  + 'ee' + OPENSEARCH_URL)
+        # pytest.skip("OpenSearch failed to start."  + 'ee' + OPENSEARCH_URL)
         client = opensearch.AsyncOpenSearch(OPENSEARCH_URL, **kw)
 
         # wait for yellow status
