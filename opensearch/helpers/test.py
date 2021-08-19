@@ -39,8 +39,8 @@ if "OPENSEARCH_URL" in os.environ:
 else:
     OPENSEARCH_URL = "https://elastic:changeme@localhost:9200"
 
-print('blaaaaaaaaaa', OPENSEARCH_URL)
-print('os.environ', os.environ)
+print("blaaaaaaaaaa", OPENSEARCH_URL)
+print("os.environ", os.environ)
 
 CA_CERTS = join(dirname(dirname(dirname(abspath(__file__)))), ".ci/certs/ca.pem")
 
@@ -58,11 +58,11 @@ def get_test_client(nowait=False, **kwargs):
 
     kw.update(kwargs)
     client = OpenSearch(OPENSEARCH_URL, **kw)
-    if OPENSEARCH_URL.startswith('https://'):
-        print('ooooooowwwww ', OPENSEARCH_URL)
-        client = opensearch.OpenSearch(
+    if OPENSEARCH_URL.startswith("https://"):
+        print("ooooooowwwww ", OPENSEARCH_URL)
+        client = OpenSearch(
             OPENSEARCH_URL.replace("elastic:changeme@", ""),
-            http_auth=('admin', 'admin'),
+            http_auth=("admin", "admin"),
             verify_certs=False,
             **kw
         )

@@ -45,7 +45,7 @@ def fetch_opensearch_repo():
 
     # no repo
     if not exists(repo_path) or not exists(join(repo_path, ".git")):
-        print('cloning')
+        print("cloning")
         subprocess.check_call(
             # "git clone --depth=1 https://github.com/opensearch-project/opensearch %s" % repo_path,
             "git clone https://github.com/opensearch-project/opensearch %s" % repo_path,
@@ -134,7 +134,7 @@ def run_all(argv=None):
 
     exit_code = 0
     try:
-        print('rushi running', argv)
+        print("rushi running", argv)
         subprocess.check_call(argv, stdout=sys.stdout, stderr=sys.stderr)
     except subprocess.CalledProcessError as e:
         exit_code = e.returncode
