@@ -45,7 +45,7 @@ print("os.environ", os.environ)
 CA_CERTS = join(dirname(dirname(dirname(abspath(__file__)))), ".ci/certs/ca.pem")
 
 
-def get_test_client(nowait=False, **kwargs):
+def get_test_client(nowait=False, with_security=False, **kwargs):
     # construct kwargs from the environment
     kw = {"timeout": 30, "ca_certs": CA_CERTS}
 
@@ -58,7 +58,7 @@ def get_test_client(nowait=False, **kwargs):
 
     kw.update(kwargs)
     client = OpenSearch(OPENSEARCH_URL, **kw)
-    if OPENSEARCH_URL.startswith("https://"):
+    if OPENSEARCH_URL.startswith("https://") or with_security:
         print("ooooooowwwww ", OPENSEARCH_URL)
         client = OpenSearch(
             OPENSEARCH_URL.replace("elastic:changeme@", ""),

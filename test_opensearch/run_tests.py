@@ -104,6 +104,9 @@ def run_all(argv=None):
             "--cache-clear",
             "-vv",
         ]
+        secured = False
+        if os.environ.get('OPENSEARCH_URL', '').startswith('https://'):
+            secured = True
 
         ignores = []
         # Python 3.6+ is required for async
@@ -121,12 +124,18 @@ def run_all(argv=None):
         if ignores:
             argv.extend(["--ignore=%s" % ignore for ignore in ignores])
 
-        # Jenkins, only run server tests
+        # Jenkins/gihub actions, only run server tests
         if environ.get("TEST_TYPE") == "server":
+            print('rushii jenkins')
             test_dir = abspath(dirname(__file__))
-            argv.append(join(test_dir, "test_server"))
-            if sys.version_info >= (3, 6):
-                argv.append(join(test_dir, "test_async/test_server"))
+            if secured:
+                print('rushii jenkins sec')
+                argv.append(join(test_dir, "test_server_secured"))
+            else:
+                print('rushii jenkins unsec')
+                argv.append(join(test_dir, "test_server"))
+                if sys.version_info >= (3, 6):
+                    argv.append(join(test_dir, "test_async/test_server"))
 
         # Not in CI, run all tests specified.
         else:
