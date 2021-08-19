@@ -58,6 +58,14 @@ def get_test_client(nowait=False, **kwargs):
 
     kw.update(kwargs)
     client = OpenSearch(OPENSEARCH_URL, **kw)
+    if OPENSEARCH_URL.startswith('https://'):
+        print('ooooooowwwww ', OPENSEARCH_URL)
+        client = opensearch.OpenSearch(
+            OPENSEARCH_URL.replace("elastic:changeme@", ""),
+            http_auth=('admin', 'admin'),
+            verify_certs=False,
+            **kw
+        )
 
     # wait for yellow status
     for _ in range(1 if nowait else 100):
