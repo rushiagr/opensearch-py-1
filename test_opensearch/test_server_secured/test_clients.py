@@ -42,10 +42,3 @@ class TestBulk(OpenSearchTestCase):
 
         self.assertFalse(response["errors"])
         self.assertEqual(1, len(response["items"]))
-
-    def test_bulk_works_with_bytestring_body(self):
-        docs = b'{ "index" : { "_index" : "bulk_test_index", "_id" : "2" } }\n{"answer": 42}'
-        response = self.client.bulk(body=docs)
-
-        self.assertFalse(response["errors"])
-        self.assertEqual(1, len(response["items"]))
