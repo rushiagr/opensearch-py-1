@@ -47,7 +47,7 @@ CA_CERTS = join(dirname(dirname(dirname(abspath(__file__)))), ".ci/certs/ca.pem"
 
 def get_test_client(nowait=False, with_security=False, **kwargs):
     # construct kwargs from the environment
-    print('rushi in get test cl')
+    print("rushi in get test cl")
     kw = {"timeout": 30, "ca_certs": CA_CERTS}
 
     if "PYTHON_CONNECTION_CLASS" in os.environ:
@@ -61,7 +61,7 @@ def get_test_client(nowait=False, with_security=False, **kwargs):
     client = None
     if OPENSEARCH_URL.startswith("https://") or with_security:
         print("ooooooowwwww ", OPENSEARCH_URL)
-        print('secure client')
+        print("secure client")
         client = OpenSearch(
             OPENSEARCH_URL.replace("elastic:changeme@", ""),
             http_auth=("admin", "admin"),
@@ -69,7 +69,7 @@ def get_test_client(nowait=False, with_security=False, **kwargs):
             **kw
         )
     else:
-        print('nonsecure client')
+        print("nonsecure client")
         client = OpenSearch(OPENSEARCH_URL, **kw)
 
     # wait for yellow status
@@ -93,18 +93,18 @@ class OpenSearchTestCase(TestCase):
 
     @classmethod
     def setup_class(cls):
-        print('setting up')
+        print("setting up")
         cls.client = cls._get_client()
-        print('setting up complete', cls.client)
+        print("setting up complete", cls.client)
 
     def teardown_method(self, _):
-        print('tearing down')
+        print("tearing down")
         # Hidden indices expanded in wildcards in ES 7.7
         expand_wildcards = ["open", "closed"]
         if self.opensearch_version() >= (1, 0):
             expand_wildcards.append("hidden")
 
-        print('tearing down dleting ', cls.client)
+        print("tearing down dleting ")
         self.client.indices.delete(
             index="*", ignore=404, expand_wildcards=expand_wildcards
         )

@@ -25,20 +25,17 @@
 #  specific language governing permissions and limitations
 #  under the License.
 
-from __future__ import unicode_literals
+from unittest import TestCase
 
-from . import OpenSearchTestCase
+from opensearch import OpenSearch
 
 
-class TestUnicode(OpenSearchTestCase):
+class TestMy(TestCase):
     def test_indices_analyze(self):
-        self.client.indices.analyze(body='{"text": "привет"}')
-
-
-class TestBulk(OpenSearchTestCase):
-    def test_bulk_works_with_string_body(self):
-        docs = '{ "index" : { "_index" : "bulk_test_index", "_id" : "1" } }\n{"answer": 42}'
-        response = self.client.bulk(body=docs)
-
-        self.assertFalse(response["errors"])
-        self.assertEqual(1, len(response["items"]))
+        client = OpenSearch(
+            "https://instance:9200",
+            http_auth=("admin", "admin"),
+            verify_certs=False,
+        )
+        info = client.info()
+        print("info si", info)

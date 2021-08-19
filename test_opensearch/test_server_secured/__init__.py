@@ -57,7 +57,7 @@ def get_client(**kwargs):
             client = False
             raise
 
-    print('rushi kwargs are', kwargs)
+    print("rushi kwargs are", kwargs)
     if not kwargs:
         client = new_client
 

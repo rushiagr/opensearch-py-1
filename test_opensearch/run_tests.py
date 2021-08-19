@@ -105,7 +105,7 @@ def run_all(argv=None):
             "-vv",
         ]
         secured = False
-        if environ.get('OPENSEARCH_URL', '').startswith('https://'):
+        if environ.get("OPENSEARCH_URL", "").startswith("https://"):
             secured = True
 
         ignores = []
@@ -124,10 +124,10 @@ def run_all(argv=None):
 
         # Jenkins/gihub actions, only run server tests
         if environ.get("TEST_TYPE") == "server":
-            print('rushii jenkins')
+            print("rushii jenkins")
             test_dir = abspath(dirname(__file__))
             if secured:
-                print('rushii jenkins sec')
+                print("rushii jenkins sec")
                 argv.append(join(test_dir, "test_server_secured"))
                 ignores.extend(
                     [
@@ -136,7 +136,7 @@ def run_all(argv=None):
                     ]
                 )
             else:
-                print('rushii jenkins unsec')
+                print("rushii jenkins unsec")
                 argv.append(join(test_dir, "test_server"))
                 if sys.version_info >= (3, 6):
                     argv.append(join(test_dir, "test_async/test_server"))
@@ -148,7 +148,6 @@ def run_all(argv=None):
 
         if ignores:
             argv.extend(["--ignore=%s" % ignore for ignore in ignores])
-
 
         # Not in CI, run all tests specified.
         else:
