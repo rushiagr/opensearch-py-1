@@ -28,15 +28,21 @@
 from unittest import TestCase
 
 from opensearch import OpenSearch
+from opensearch.helpers.test import CA_CERTS, OPENSEARCH_URL
 
 
 class TestMy(TestCase):
     def test_indices_analyze(self):
-        client = OpenSearch(
-            "https://instance:9200",
-            http_auth=("admin", "admin"),
-            verify_certs=False,
-        )
+        client = None
+        if OPENSEARCH_URL.startswith('https://'):
+            client = OpenSearch(
+                OPENSEARCH_URL,
+                http_auth=("admin", "admin"),
+                verify_certs=False,
+            )
+        else:
+            client = OpenSearch(OPENSEARCH_URL)
+
         info = client.info()
         print("info si", info)
         self.assertNotEqual(info["version"]["number"], "")
