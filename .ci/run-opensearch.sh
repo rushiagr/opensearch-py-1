@@ -65,8 +65,6 @@ END
   if [[ "$i" == "$((NUMBER_OF_NODES-1))" ]]; then local_detach=$DETACH; fi
 
   echo -e "\033[34;1mINFO: building $CLUSTER container\033[0m"
-  echo 'cluster is' $CLUSTER
-  echo 'secure integ is' $SECURE_INTEGRATION
   docker build \
     --file=.ci/$CLUSTER/Dockerfile \
     --build-arg SECURE_INTEGRATION=$SECURE_INTEGRATION \

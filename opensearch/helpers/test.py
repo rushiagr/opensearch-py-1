@@ -39,15 +39,11 @@ if "OPENSEARCH_URL" in os.environ:
 else:
     OPENSEARCH_URL = "https://elastic:changeme@localhost:9200"
 
-print("blaaaaaaaaaa", OPENSEARCH_URL)
-print("os.environ", os.environ)
-
 CA_CERTS = join(dirname(dirname(dirname(abspath(__file__)))), ".ci/certs/ca.pem")
 
 
 def get_test_client(nowait=False, with_security=False, **kwargs):
     # construct kwargs from the environment
-    print("rushi in get test cl")
     kw = {"timeout": 30, "ca_certs": CA_CERTS}
 
     if "PYTHON_CONNECTION_CLASS" in os.environ:
@@ -76,7 +72,6 @@ def get_test_client(nowait=False, with_security=False, **kwargs):
     for _ in range(1 if nowait else 100):
         try:
             client.cluster.health(wait_for_status="yellow")
-            print("client succeess ", OPENSEARCH_URL)
             return client
         except ConnectionError:
             time.sleep(0.1)
@@ -93,18 +88,14 @@ class OpenSearchTestCase(TestCase):
 
     @classmethod
     def setup_class(cls):
-        print("setting up")
         cls.client = cls._get_client()
-        print("setting up complete", cls.client)
 
     def teardown_method(self, _):
-        print("tearing down")
         # Hidden indices expanded in wildcards in ES 7.7
         expand_wildcards = ["open", "closed"]
         if self.opensearch_version() >= (1, 0):
             expand_wildcards.append("hidden")
 
-        print("tearing down dleting ")
         self.client.indices.delete(
             index="*", ignore=404, expand_wildcards=expand_wildcards
         )

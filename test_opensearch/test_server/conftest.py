@@ -61,7 +61,6 @@ def sync_client_factory():
 
         # We do this little dance with the URL to force
         # Requests to respect 'headers: None' within rest API spec tests.
-        print("aaaaaaa ", OPENSEARCH_URL)
         client = opensearch.OpenSearch(
             OPENSEARCH_URL.replace("elastic:changeme@", ""), **kw
         )

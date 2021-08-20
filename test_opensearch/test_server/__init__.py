@@ -43,17 +43,12 @@ def get_client(**kwargs):
     try:
         from test_opensearch.local import get_client as local_get_client
 
-        print("rushi findig local cl")
-
         new_client = local_get_client(**kwargs)
     except ImportError:
-        print("rushi error findig local cl")
         # fallback to using vanilla client
         try:
             new_client = test.get_test_client(**kwargs)
-            print("rushi2  findig local cl")
         except SkipTest:
-            print("rushi error2 findig local cl")
             client = False
             raise
 
