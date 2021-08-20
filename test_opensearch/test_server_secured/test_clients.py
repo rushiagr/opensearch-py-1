@@ -39,4 +39,6 @@ class TestMy(TestCase):
         )
         info = client.info()
         print("info si", info)
-        raise Exception
+        self.assertNotEqual(info['version']['number'], "")
+        self.assertNotEqual(info['tagline'], "")
+        self.assertTrue(info['version'].get('build_flavor', '') != '' or info['version'].get('distribution', '') != '')
