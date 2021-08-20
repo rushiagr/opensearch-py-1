@@ -117,6 +117,7 @@ def run_all(argv=None):
             ignores.extend(
                 [
                     "test_opensearch/test_server/",
+                    "test_opensearch/test_server_secured/",
                     "test_opensearch/test_async/test_server/",
                 ]
             )
