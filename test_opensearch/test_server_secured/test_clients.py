@@ -39,3 +39,4 @@ class TestMy(TestCase):
         )
         info = client.info()
         print("info si", info)
+        raise Exception
