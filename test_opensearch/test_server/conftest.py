@@ -64,14 +64,6 @@ def sync_client_factory():
         client = opensearch.OpenSearch(
             OPENSEARCH_URL.replace("elastic:changeme@", ""), **kw
         )
-        if OPENSEARCH_URL.startswith("https://"):
-            print("ooooooo ", OPENSEARCH_URL)
-            client = opensearch.OpenSearch(
-                OPENSEARCH_URL.replace("elastic:changeme@", ""),
-                http_auth=("admin", "admin"),
-                verify_certs=False,
-                **kw
-            )
 
         # Wait for the cluster to report a status of 'yellow'
         for _ in range(100):

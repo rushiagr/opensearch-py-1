@@ -42,7 +42,7 @@ else:
 CA_CERTS = join(dirname(dirname(dirname(abspath(__file__)))), ".ci/certs/ca.pem")
 
 
-def get_test_client(nowait=False, with_security=False, **kwargs):
+def get_test_client(nowait=False, **kwargs):
     # construct kwargs from the environment
     kw = {"timeout": 30, "ca_certs": CA_CERTS}
 
@@ -54,19 +54,7 @@ def get_test_client(nowait=False, with_security=False, **kwargs):
         )
 
     kw.update(kwargs)
-    client = None
-    if OPENSEARCH_URL.startswith("https://") or with_security:
-        print("ooooooowwwww ", OPENSEARCH_URL)
-        print("secure client")
-        client = OpenSearch(
-            OPENSEARCH_URL.replace("elastic:changeme@", ""),
-            http_auth=("admin", "admin"),
-            verify_certs=False,
-            **kw
-        )
-    else:
-        print("nonsecure client")
-        client = OpenSearch(OPENSEARCH_URL, **kw)
+    client = OpenSearch(OPENSEARCH_URL, **kw)
 
     # wait for yellow status
     for _ in range(1 if nowait else 100):
@@ -77,7 +65,6 @@ def get_test_client(nowait=False, with_security=False, **kwargs):
             time.sleep(0.1)
     else:
         # timeout
-        print("client faill ", OPENSEARCH_URL)
         raise SkipTest("OpenSearch failed to start.")
 
 
