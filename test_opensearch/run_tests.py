@@ -103,6 +103,10 @@ def run_all(argv=None):
             "-vv",
         ]
 
+        secured = False
+        if environ.get("OPENSEARCH_URL", "").startswith("https://"):
+            secured = True
+
         ignores = []
         # Python 3.6+ is required for async
         if sys.version_info < (3, 6):
