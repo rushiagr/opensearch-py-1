@@ -269,7 +269,7 @@ def main():
 
     # Test everything that got created
     dists = os.listdir(os.path.join(base_dir, "dist"))
-    assert len(dists) == 4
+    assert len(dists) == 4, dists
     for dist in dists:
         test_dist(os.path.join(base_dir, "dist", dist))
     os.system("chmod a+w dist/*")
