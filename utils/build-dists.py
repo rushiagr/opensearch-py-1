@@ -71,7 +71,7 @@ def run(*argv, expect_exit_code=0):
 def test_dist(dist):
     print('testing dist', dist, 'and pathbasename', os.path.basename(dist))
     with set_tmp_dir() as tmp_dir:
-        dist_name = re.match(r"^(opensearchpy\d*)-", os.path.basename(dist)).group(1)
+        dist_name = re.match(r"^(opensearchpy\d*)-", os.path.basename(dist).replace('-', '').replace('_', '')).group(1)
 
         # Build the venv and install the dist
         run("python", "-m", "venv", os.path.join(tmp_dir, "venv"))
