@@ -73,7 +73,7 @@ def fetch_opensearch_repo():
     # fetch new commits to be sure...
     print("Fetching opensearch repo...")
     subprocess.check_call(
-        "cd %s && git fetch https://github.com/opensearch-project/opensearchpy.git"
+        "cd %s && git fetch https://github.com/opensearch-project/opensearch.git"
         % repo_path,
         shell=True,
     )
