@@ -26,7 +26,7 @@
 
 from typing import Any, AsyncGenerator, Dict
 
-from opensearchpy.import (
+from opensearchpy import (
     AIOHttpConnection,
     AsyncOpenSearch,
     AsyncTransport,

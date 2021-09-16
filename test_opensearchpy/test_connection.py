@@ -40,7 +40,7 @@ from mock import Mock, patch
 from requests.auth import AuthBase
 from urllib3._collections import HTTPHeaderDict
 
-from opensearchpy.import __versionstr__
+from opensearchpy import __versionstr__
 from opensearchpy.compat import reraise_exceptions
 from opensearchpy.connection import (
     Connection,

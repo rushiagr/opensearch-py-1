@@ -41,7 +41,7 @@ import pytest
 import urllib3
 import yaml
 
-from opensearchpy.import OpenSearchWarning, TransportError
+from opensearchpy import OpenSearchWarning, TransportError
 from opensearchpy.client.utils import _base64_auth_header
 from opensearchpy.compat import string_types
 from opensearchpy.helpers.test import _get_version

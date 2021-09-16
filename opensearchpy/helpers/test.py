@@ -31,7 +31,7 @@ import time
 from os.path import abspath, dirname, join
 from unittest import SkipTest, TestCase
 
-from opensearchpy.import OpenSearch
+from opensearchpy import OpenSearch
 from opensearchpy.exceptions import ConnectionError
 
 if "OPENSEARCH_URL" in os.environ:
@@ -47,7 +47,7 @@ def get_test_client(nowait=False, **kwargs):
     kw = {"timeout": 30, "ca_certs": CA_CERTS}
 
     if "PYTHON_CONNECTION_CLASS" in os.environ:
-        from opensearchpy.import connection
+        from opensearchpy import connection
 
         kw["connection_class"] = getattr(
             connection, os.environ["PYTHON_CONNECTION_CLASS"]

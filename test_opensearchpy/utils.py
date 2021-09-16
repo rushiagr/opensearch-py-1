@@ -26,7 +26,7 @@
 
 import time
 
-from opensearchpy.import OpenSearch
+from opensearchpy import OpenSearch
 
 
 def wipe_cluster(client):
@@ -35,7 +35,7 @@ def wipe_cluster(client):
     try:
         # If client is async we need to replace the client
         # with a synchronous one.
-        from opensearchpy.import AsyncOpenSearch
+        from opensearchpy import AsyncOpenSearch
 
         if isinstance(client, AsyncOpenSearch):
             client = OpenSearch(client.transport.hosts, verify_certs=False)

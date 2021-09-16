@@ -37,7 +37,7 @@ import pytest
 from mock import patch
 from multidict import CIMultiDict
 
-from opensearchpy.import AIOHttpConnection, __versionstr__
+from opensearchpy import AIOHttpConnection, __versionstr__
 from opensearchpy.compat import reraise_exceptions
 from opensearchpy.exceptions import ConnectionError
 

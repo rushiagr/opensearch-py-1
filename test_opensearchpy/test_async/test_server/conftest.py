@@ -26,9 +26,9 @@
 
 import asyncio
 
+import opensearch
 import pytest
 
-import opensearch
 from opensearchpy.helpers.test import CA_CERTS, OPENSEARCH_URL
 
 from ...utils import wipe_cluster

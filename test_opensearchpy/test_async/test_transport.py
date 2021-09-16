@@ -33,7 +33,7 @@ import json
 import pytest
 from mock import patch
 
-from opensearchpy.import AsyncTransport
+from opensearchpy import AsyncTransport
 from opensearchpy.connection import Connection
 from opensearchpy.connection_pool import DummyConnectionPool
 from opensearchpy.exceptions import ConnectionError, TransportError

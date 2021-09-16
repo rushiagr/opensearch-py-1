@@ -26,7 +26,7 @@
 
 from mock import patch
 
-from opensearchpy.import TransportError, helpers
+from opensearchpy import TransportError, helpers
 from opensearchpy.helpers import ScanError
 
 from ..test_cases import SkipTest

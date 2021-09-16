@@ -339,9 +339,9 @@ def download_artifact(version):
     resp = http.request(
         "GET", f"https://artifacts-api.elastic.co/v1/versions/{version}"
     )
-    packages = json.loads(resp.data)["version"]["builds"][0]["projects"]["opensearchpy"][
-        "packages"
-    ]
+    packages = json.loads(resp.data)["version"]["builds"][0]["projects"][
+        "opensearchpy"
+    ]["packages"]
     for package in packages:
         if re.match(r"^rest-resources-zip-.*\.zip$", package):
             zip_url = packages[package]["url"]

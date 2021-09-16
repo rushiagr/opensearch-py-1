@@ -29,7 +29,7 @@ import time
 
 import pytest
 
-import opensearch
+import opensearchpy
 from opensearchpy.helpers.test import CA_CERTS, OPENSEARCH_URL
 
 from ..utils import wipe_cluster
@@ -53,7 +53,7 @@ def sync_client_factory():
             "headers": {"Authorization": "Basic ZWxhc3RpYzpjaGFuZ2VtZQ=="},
         }
         if "PYTHON_CONNECTION_CLASS" in os.environ:
-            from opensearchpy.import connection
+            from opensearchpy import connection
 
             kw["connection_class"] = getattr(
                 connection, os.environ["PYTHON_CONNECTION_CLASS"]
@@ -61,7 +61,7 @@ def sync_client_factory():
 
         # We do this little dance with the URL to force
         # Requests to respect 'headers: None' within rest API spec tests.
-        client = opensearch.OpenSearch(
+        client = opensearchpy.OpenSearch(
             OPENSEARCH_URL.replace("elastic:changeme@", ""), **kw
         )
 
