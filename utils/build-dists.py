@@ -251,11 +251,11 @@ def main():
             setup_py = f.read()
         with open(setup_py_path, "w") as f:
             f.truncate()
-            assert 'package_name = "opensearchpy"' in setup_py
+            assert 'package_name = "opensearch-py"' in setup_py
             f.write(
                 setup_py.replace(
-                    'package_name = "opensearchpy"',
-                    'package_name = "opensearchpy%s"' % suffix,
+                    'package_name = "opensearch-py"',
+                    'package_name = "opensearch-py%s"' % suffix,
                 )
             )
 
