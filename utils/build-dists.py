@@ -269,6 +269,7 @@ def main():
 
     # Test everything that got created
     dists = os.listdir(os.path.join(base_dir, "dist"))
+    print('four dissts are', dists)
     assert len(dists) == 4, dists
     for dist in dists:
         test_dist(os.path.join(base_dir, "dist", dist))
