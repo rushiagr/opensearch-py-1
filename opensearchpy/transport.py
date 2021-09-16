@@ -90,8 +90,8 @@ class Transport(object):
         """
         :arg hosts: list of dictionaries, each containing keyword arguments to
             create a `connection_class` instance
-        :arg connection_class: subclass of :class:`~opensearch.Connection` to use
-        :arg connection_pool_class: subclass of :class:`~opensearch.ConnectionPool` to use
+        :arg connection_class: subclass of :class:`~opensearchpy.Connection` to use
+        :arg connection_pool_class: subclass of :class:`~opensearchpy.ConnectionPool` to use
         :arg host_info_callback: callback responsible for taking the node information from
             `/_cluster/nodes`, along with already extracted information, and
             producing a list of arguments (same as `hosts` parameter)
@@ -186,7 +186,7 @@ class Transport(object):
 
     def add_connection(self, host):
         """
-        Create a new :class:`~opensearch.Connection` instance and add it to the pool.
+        Create a new :class:`~opensearchpy.Connection` instance and add it to the pool.
 
         :arg host: kwargs that will be used to create the instance
         """
@@ -197,7 +197,7 @@ class Transport(object):
         """
         Instantiate all the connections and create new connection pool to hold them.
         Tries to identify unchanged hosts and re-use existing
-        :class:`~opensearch.Connection` instances.
+        :class:`~opensearchpy.Connection` instances.
 
         :arg hosts: same as `__init__`
         """
@@ -230,7 +230,7 @@ class Transport(object):
     def get_connection(self):
         """
         Retrieve a :class:`~opensearchpy.Connection` instance from the
-        :class:`~opensearch.ConnectionPool` instance.
+        :class:`~opensearchpy.ConnectionPool` instance.
         """
         if self.sniffer_timeout:
             if time.time() >= self.last_sniff + self.sniffer_timeout:
@@ -334,7 +334,7 @@ class Transport(object):
         Mark a connection as dead (failed) in the connection pool. If sniffing
         on failure is enabled this will initiate the sniffing process.
 
-        :arg connection: instance of :class:`~opensearch.Connection` that failed
+        :arg connection: instance of :class:`~opensearchpy.Connection` that failed
         """
         # mark as dead even when sniffing to avoid hitting this host during the sniff process
         self.connection_pool.mark_dead(connection)
@@ -356,9 +356,9 @@ class Transport(object):
         :arg method: HTTP method to use
         :arg url: absolute url (without host) to target
         :arg headers: dictionary of headers, will be handed over to the
-            underlying :class:`~opensearch.Connection` class
+            underlying :class:`~opensearchpy.Connection` class
         :arg params: dictionary of query parameters, will be handed over to the
-            underlying :class:`~opensearch.Connection` class for serialization
+            underlying :class:`~opensearchpy.Connection` class for serialization
         :arg body: body of the request, will be serialized using serializer and
             passed to the connection
         """

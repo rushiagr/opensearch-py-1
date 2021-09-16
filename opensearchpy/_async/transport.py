@@ -57,7 +57,7 @@ class AsyncTransport(Transport):
         :arg hosts: list of dictionaries, each containing keyword arguments to
             create a `connection_class` instance
         :arg connection_class: subclass of :class:`~opensearchpy.Connection` to use
-        :arg connection_pool_class: subclass of :class:`~opensearch.ConnectionPool` to use
+        :arg connection_pool_class: subclass of :class:`~opensearchpy.ConnectionPool` to use
         :arg host_info_callback: callback responsible for taking the node information from
             `/_cluster/nodes`, along with already extracted information, and
             producing a list of arguments (same as `hosts` parameter)
@@ -300,7 +300,7 @@ class AsyncTransport(Transport):
         Mark a connection as dead (failed) in the connection pool. If sniffing
         on failure is enabled this will initiate the sniffing process.
 
-        :arg connection: instance of :class:`~opensearch.Connection` that failed
+        :arg connection: instance of :class:`~opensearchpy.Connection` that failed
         """
         self.connection_pool.mark_dead(connection)
         if self.sniff_on_connection_fail:
@@ -324,9 +324,9 @@ class AsyncTransport(Transport):
         :arg method: HTTP method to use
         :arg url: absolute url (without host) to target
         :arg headers: dictionary of headers, will be handed over to the
-            underlying :class:`~opensearch.Connection` class
+            underlying :class:`~opensearchpy.Connection` class
         :arg params: dictionary of query parameters, will be handed over to the
-            underlying :class:`~opensearch.Connection` class for serialization
+            underlying :class:`~opensearchpy.Connection` class for serialization
         :arg body: body of the request, will be serialized using serializer and
             passed to the connection
         """

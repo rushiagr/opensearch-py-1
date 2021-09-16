@@ -48,7 +48,7 @@ class ConnectionSelector(object):
     *currently* live connections to choose from.
 
     The options dictionary is the one that has been passed to
-    :class:`~opensearch.Transport` as `hosts` param and the same that is
+    :class:`~opensearchpy.Transport` as `hosts` param and the same that is
     used to construct the Connection object itself. When the Connection was
     created from information retrieved from the cluster via the sniffing
     process it will be the dictionary returned by the `host_info_callback`.
@@ -99,11 +99,11 @@ class RoundRobinSelector(ConnectionSelector):
 
 class ConnectionPool(object):
     """
-    Container holding the :class:`~opensearch.Connection` instances,
+    Container holding the :class:`~opensearchpy.Connection` instances,
     managing the selection process (via a
-    :class:`~opensearch.ConnectionSelector`) and dead connections.
+    :class:`~opensearchpy.ConnectionSelector`) and dead connections.
 
-    It's only interactions are with the :class:`~opensearch.Transport` class
+    It's only interactions are with the :class:`~opensearchpy.Transport` class
     that drives all the actions within `ConnectionPool`.
 
     Initially connections are stored on the class as a list and, along with the
@@ -131,12 +131,12 @@ class ConnectionPool(object):
     ):
         """
         :arg connections: list of tuples containing the
-            :class:`~opensearch.Connection` instance and it's options
+            :class:`~opensearchpy.Connection` instance and it's options
         :arg dead_timeout: number of seconds a connection should be retired for
             after a failure, increases on consecutive failures
         :arg timeout_cutoff: number of consecutive failures after which the
             timeout doesn't increase
-        :arg selector_class: :class:`~opensearch.ConnectionSelector`
+        :arg selector_class: :class:`~opensearchpy.ConnectionSelector`
             subclass to use if more than one connection is live
         :arg randomize_hosts: shuffle the list of connections upon arrival to
             avoid dog piling effect across processes

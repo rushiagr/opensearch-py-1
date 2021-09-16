@@ -48,10 +48,10 @@ from ..exceptions import (
 
 logger = logging.getLogger("opensearch")
 
-# create the opensearch.trace logger, but only set propagate to False if the
+# create the opensearchpy.trace logger, but only set propagate to False if the
 # logger hasn't already been configured
-_tracer_already_configured = "opensearch.trace" in logging.Logger.manager.loggerDict
-tracer = logging.getLogger("opensearch.trace")
+_tracer_already_configured = "opensearchpy.trace" in logging.Logger.manager.loggerDict
+tracer = logging.getLogger("opensearchpy.trace")
 if not _tracer_already_configured:
     tracer.propagate = False
 

@@ -121,7 +121,7 @@ class TestClient(OpenSearchTestCase):
         self.assertEqual("<OtherOpenSearch([{}])>", repr(OtherOpenSearch()))
 
     def test_repr_contains_hosts_passed_in(self):
-        self.assertIn("opensearch.org", repr(OpenSearch(["opensearch.org:123"])))
+        self.assertIn("opensearchpy.org", repr(OpenSearch(["opensearch.org:123"])))
 
     def test_repr_truncates_host_to_5(self):
         hosts = [{"host": "opensearch" + str(i)} for i in range(10)]

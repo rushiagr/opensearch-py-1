@@ -312,7 +312,7 @@ class TestAIOHttpConnection:
                     == str(w[0].message)
                 )
 
-    @patch("opensearch.connection.base.logger")
+    @patch("opensearchpy.connection.base.logger")
     async def test_uncompressed_body_logged(self, logger):
         con = await self._get_mock_connection(connection_params={"http_compress": True})
         await con.perform_request("GET", "/", body=b'{"example": "body"}')

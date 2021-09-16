@@ -52,13 +52,13 @@ class OpenSearch(object):
 
     The instance has attributes ``cat``, ``cluster``, ``indices``, ``ingest``,
     ``nodes``, ``snapshot`` and ``tasks`` that provide access to instances of
-    :class:`~opensearch.client.CatClient`,
-    :class:`~opensearch.client.ClusterClient`,
-    :class:`~opensearch.client.IndicesClient`,
-    :class:`~opensearch.client.IngestClient`,
-    :class:`~opensearch.client.NodesClient`,
-    :class:`~opensearch.client.SnapshotClient` and
-    :class:`~opensearch.client.TasksClient` respectively. This is the
+    :class:`~opensearchpy.client.CatClient`,
+    :class:`~opensearchpy.client.ClusterClient`,
+    :class:`~opensearchpy.client.IndicesClient`,
+    :class:`~opensearchpy.client.IngestClient`,
+    :class:`~opensearchpy.client.NodesClient`,
+    :class:`~opensearchpy.client.SnapshotClient` and
+    :class:`~opensearchpy.client.TasksClient` respectively. This is the
     preferred (and only supported) way to get access to those classes and their
     methods.
 
@@ -69,7 +69,7 @@ class OpenSearch(object):
         client = OpenSearch(connection_class=ThriftConnection)
 
     If you want to turn on :ref:`sniffing` you have several options (described
-    in :class:`~opensearch.Transport`)::
+    in :class:`~opensearchpy.Transport`)::
 
         # create connection that will automatically inspect the cluster to get
         # the list of active nodes. Start with nodes running on
@@ -95,7 +95,7 @@ class OpenSearch(object):
         ])
 
     If using SSL, there are several parameters that control how we deal with
-    certificates (see :class:`~opensearch.Urllib3HttpConnection` for
+    certificates (see :class:`~opensearchpy.Urllib3HttpConnection` for
     detailed description of the options)::
 
         client = OpenSearch(
@@ -109,7 +109,7 @@ class OpenSearch(object):
         )
 
     If using SSL, but don't verify the certs, a warning message is showed
-    optionally (see :class:`~opensearch.Urllib3HttpConnection` for
+    optionally (see :class:`~opensearchpy.Urllib3HttpConnection` for
     detailed description of the options)::
 
         client = OpenSearch(
@@ -123,7 +123,7 @@ class OpenSearch(object):
         )
 
     SSL client authentication is supported
-    (see :class:`~opensearch.Urllib3HttpConnection` for
+    (see :class:`~opensearchpy.Urllib3HttpConnection` for
     detailed description of the options)::
 
         client = OpenSearch(
@@ -174,16 +174,16 @@ class OpenSearch(object):
         """
         :arg hosts: list of nodes, or a single node, we should connect to.
             Node should be a dictionary ({"host": "localhost", "port": 9200}),
-            the entire dictionary will be passed to the :class:`~opensearch.Connection`
+            the entire dictionary will be passed to the :class:`~opensearchpy.Connection`
             class as kwargs, or a string in the format of ``host[:port]`` which will be
             translated to a dictionary automatically.  If no value is given the
-            :class:`~opensearch.Connection` class defaults will be used.
+            :class:`~opensearchpy.Connection` class defaults will be used.
 
-        :arg transport_class: :class:`~opensearch.Transport` subclass to use.
+        :arg transport_class: :class:`~opensearchpy.Transport` subclass to use.
 
         :arg kwargs: any additional arguments will be passed on to the
-            :class:`~opensearch.Transport` class and, subsequently, to the
-            :class:`~opensearch.Connection` instances.
+            :class:`~opensearchpy.Transport` class and, subsequently, to the
+            :class:`~opensearchpy.Connection` instances.
         """
         self.transport = transport_class(_normalize_hosts(hosts), **kwargs)
 

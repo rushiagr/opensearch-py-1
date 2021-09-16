@@ -450,7 +450,7 @@ class TestUrllib3Connection(TestCase):
                     str(w[0].message),
                 )
 
-    @patch("opensearch.connection.base.logger")
+    @patch("opensearchpy.connection.base.logger")
     def test_uncompressed_body_logged(self, logger):
         con = self._get_mock_connection(connection_params={"http_compress": True})
         con.perform_request("GET", "/", body=b'{"example": "body"}')
@@ -714,9 +714,9 @@ class TestRequestsConnection(TestCase):
         self.assertEqual(("username", "secret"), con.session.auth)
 
     def test_repr(self):
-        con = self._get_mock_connection({"host": "opensearch.com", "port": 443})
+        con = self._get_mock_connection({"host": "opensearchpy.com", "port": 443})
         self.assertEqual(
-            "<RequestsHttpConnection: http://opensearch.com:443>", repr(con)
+            "<RequestsHttpConnection: http://opensearchpy.com:443>", repr(con)
         )
 
     def test_conflict_error_is_returned_on_409(self):
@@ -731,14 +731,14 @@ class TestRequestsConnection(TestCase):
         con = self._get_mock_connection(status_code=400)
         self.assertRaises(RequestError, con.perform_request, "GET", "/", {}, "")
 
-    @patch("opensearch.connection.base.logger")
+    @patch("opensearchpy.connection.base.logger")
     def test_head_with_404_doesnt_get_logged(self, logger):
         con = self._get_mock_connection(status_code=404)
         self.assertRaises(NotFoundError, con.perform_request, "HEAD", "/", {}, "")
         self.assertEqual(0, logger.warning.call_count)
 
-    @patch("opensearch.connection.base.tracer")
-    @patch("opensearch.connection.base.logger")
+    @patch("opensearchpy.connection.base.tracer")
+    @patch("opensearchpy.connection.base.logger")
     def test_failed_request_logs_and_traces(self, logger, tracer):
         con = self._get_mock_connection(
             response_body=b'{"answer": 42}', status_code=500
@@ -765,8 +765,8 @@ class TestRequestsConnection(TestCase):
             )
         )
 
-    @patch("opensearch.connection.base.tracer")
-    @patch("opensearch.connection.base.logger")
+    @patch("opensearchpy.connection.base.tracer")
+    @patch("opensearchpy.connection.base.logger")
     def test_success_logs_and_traces(self, logger, tracer):
         con = self._get_mock_connection(response_body=b"""{"answer": "that's it!"}""")
         status, headers, data = con.perform_request(
@@ -805,7 +805,7 @@ class TestRequestsConnection(TestCase):
         self.assertEqual('> {"question": "what\'s that?"}', req[0][0] % req[0][1:])
         self.assertEqual('< {"answer": "that\'s it!"}', resp[0][0] % resp[0][1:])
 
-    @patch("opensearch.connection.base.logger")
+    @patch("opensearchpy.connection.base.logger")
     def test_uncompressed_body_logged(self, logger):
         con = self._get_mock_connection(connection_params={"http_compress": True})
         con.perform_request("GET", "/", body=b'{"example": "body"}')
@@ -860,7 +860,7 @@ class TestRequestsConnection(TestCase):
 
         self.assertEqual(request.headers["authorization"], "Basic dXNlcm5hbWU6c2VjcmV0")
 
-    @patch("opensearch.connection.base.tracer")
+    @patch("opensearchpy.connection.base.tracer")
     def test_url_prefix(self, tracer):
         con = self._get_mock_connection({"url_prefix": "/some-prefix/"})
         request = self._get_request(

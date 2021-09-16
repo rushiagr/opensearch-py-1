@@ -44,7 +44,7 @@ async def async_client():
             pytest.skip("test requires 'AsyncOpenSearch'")
 
         kw = {"timeout": 3, "ca_certs": CA_CERTS}
-        client = opensearch.AsyncOpenSearch(OPENSEARCH_URL, **kw)
+        client = opensearchpy.AsyncOpenSearch(OPENSEARCH_URL, **kw)
 
         # wait for yellow status
         for _ in range(100):

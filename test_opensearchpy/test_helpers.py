@@ -56,7 +56,7 @@ mock_process_bulk_chunk.call_count = 0
 
 class TestParallelBulk(TestCase):
     @mock.patch(
-        "opensearch.helpers.actions._process_bulk_chunk",
+        "opensearchpy.helpers.actions._process_bulk_chunk",
         side_effect=mock_process_bulk_chunk,
     )
     def test_all_chunks_sent(self, _process_bulk_chunk):
@@ -67,7 +67,7 @@ class TestParallelBulk(TestCase):
 
     @pytest.mark.skip
     @mock.patch(
-        "opensearch.helpers.actions._process_bulk_chunk",
+        "opensearchpy.helpers.actions._process_bulk_chunk",
         # make sure we spend some time in the thread
         side_effect=lambda *a: [
             (True, time.sleep(0.001) or threading.current_thread().ident)

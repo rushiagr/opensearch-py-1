@@ -42,7 +42,7 @@ from ..helpers.actions import (
 from ..helpers.errors import ScanError
 from .client import AsyncOpenSearch  # noqa
 
-logger = logging.getLogger("opensearch.helpers")
+logger = logging.getLogger("opensearchpy.helpers")
 
 
 async def _chunk_actions(actions, chunk_size, max_chunk_bytes, serializer):
@@ -146,7 +146,7 @@ async def async_streaming_bulk(
     """
     Streaming bulk consumes actions from the iterable passed in and yields
     results per action. For non-streaming usecases use
-    :func:`~opensearch.helpers.async_bulk` which is a wrapper around streaming
+    :func:`~opensearchpy.helpers.async_bulk` which is a wrapper around streaming
     bulk that returns summary information about the bulk operation once the
     entire input is consumed and sent.
 
@@ -156,7 +156,7 @@ async def async_streaming_bulk(
     every subsequent rejection for the same chunk, for double the time every
     time up to ``max_backoff`` seconds.
 
-    :arg client: instance of :class:`~opensearch.AsyncOpenSearch` to use
+    :arg client: instance of :class:`~opensearchpy.AsyncOpenSearch` to use
     :arg actions: iterable or async iterable containing the actions to be executed
     :arg chunk_size: number of docs in one chunk sent to client (default: 500)
     :arg max_chunk_bytes: the maximum size of the request in bytes (default: 100MB)
@@ -242,7 +242,7 @@ async def async_bulk(
     client, actions, stats_only=False, ignore_status=(), *args, **kwargs
 ):
     """
-    Helper for the :meth:`~opensearch.AsyncOpenSearch.bulk` api that provides
+    Helper for the :meth:`~opensearchpy.AsyncOpenSearch.bulk` api that provides
     a more human friendly interface - it consumes an iterator of actions and
     sends them to opensearch in chunks. It returns a tuple with summary
     information - number of successfully executed actions and either list of
@@ -254,19 +254,19 @@ async def async_bulk(
     When errors are being collected original document data is included in the
     error dictionary which can lead to an extra high memory usage. If you need
     to process a lot of data and want to ignore/collect errors please consider
-    using the :func:`~opensearch.helpers.async_streaming_bulk` helper which will
+    using the :func:`~opensearchpy.helpers.async_streaming_bulk` helper which will
     just return the errors and not store them in memory.
 
 
-    :arg client: instance of :class:`~opensearch.AsyncOpenSearch` to use
+    :arg client: instance of :class:`~opensearchpy.AsyncOpenSearch` to use
     :arg actions: iterator containing the actions
     :arg stats_only: if `True` only report number of successful/failed
         operations instead of just number of successful and a list of error responses
     :arg ignore_status: list of HTTP status code that you want to ignore
 
     Any additional keyword arguments will be passed to
-    :func:`~opensearch.helpers.async_streaming_bulk` which is used to execute
-    the operation, see :func:`~opensearch.helpers.async_streaming_bulk` for more
+    :func:`~opensearchpy.helpers.async_streaming_bulk` which is used to execute
+    the operation, see :func:`~opensearchpy.helpers.async_streaming_bulk` for more
     accepted parameters.
     """
     success, failed = 0, 0
@@ -304,7 +304,7 @@ async def async_scan(
 ):
     """
     Simple abstraction on top of the
-    :meth:`~opensearch.AsyncOpenSearch.scroll` api - a simple iterator that
+    :meth:`~opensearchpy.AsyncOpenSearch.scroll` api - a simple iterator that
     yields all hits as returned by underlining scroll requests.
 
     By default scan does not return results in any pre-determined order. To
@@ -313,8 +313,8 @@ async def async_scan(
     may be an expensive operation and will negate the performance benefits of
     using ``scan``.
 
-    :arg client: instance of :class:`~opensearch.AsyncOpenSearch` to use
-    :arg query: body for the :meth:`~opensearch.AsyncOpenSearch.search` api
+    :arg client: instance of :class:`~opensearchpy.AsyncOpenSearch` to use
+    :arg query: body for the :meth:`~opensearchpy.AsyncOpenSearch.search` api
     :arg scroll: Specify how long a consistent view of the index should be
         maintained for scrolled search
     :arg raise_on_error: raises an exception (``ScanError``) if an error is
@@ -329,10 +329,10 @@ async def async_scan(
         scroll API at the end of the method on completion or error, defaults
         to true.
     :arg scroll_kwargs: additional kwargs to be passed to
-        :meth:`~opensearch.AsyncOpenSearch.scroll`
+        :meth:`~opensearchpy.AsyncOpenSearch.scroll`
 
     Any additional keyword arguments will be passed to the initial
-    :meth:`~opensearch.AsyncOpenSearch.search` call::
+    :meth:`~opensearchpy.AsyncOpenSearch.search` call::
 
         async_scan(client,
             query={"query": {"match": {"title": "python"}}},
@@ -427,7 +427,7 @@ async def async_reindex(
     to another, potentially (if `target_client` is specified) on a different cluster.
     If you don't specify the query you will reindex all the documents.
 
-    Since ``2.3`` a :meth:`~opensearch.AsyncOpenSearch.reindex` api is
+    Since ``2.3`` a :meth:`~opensearchpy.AsyncOpenSearch.reindex` api is
     available as part of opensearch itself. It is recommended to use the api
     instead of this helper wherever possible. The helper is here mostly for
     backwards compatibility and for situations where more flexibility is
@@ -437,20 +437,20 @@ async def async_reindex(
 
         This helper doesn't transfer mappings, just the data.
 
-    :arg client: instance of :class:`~opensearch.AsyncOpenSearch` to use (for
+    :arg client: instance of :class:`~opensearchpy.AsyncOpenSearch` to use (for
         read if `target_client` is specified as well)
     :arg source_index: index (or list of indices) to read documents from
     :arg target_index: name of the index in the target cluster to populate
-    :arg query: body for the :meth:`~opensearch.AsyncOpenSearch.search` api
+    :arg query: body for the :meth:`~opensearchpy.AsyncOpenSearch.search` api
     :arg target_client: optional, is specified will be used for writing (thus
         enabling reindex between clusters)
     :arg chunk_size: number of docs in one chunk sent to client (default: 500)
     :arg scroll: Specify how long a consistent view of the index should be
         maintained for scrolled search
     :arg scan_kwargs: additional kwargs to be passed to
-        :func:`~opensearch.helpers.async_scan`
+        :func:`~opensearchpy.helpers.async_scan`
     :arg bulk_kwargs: additional kwargs to be passed to
-        :func:`~opensearch.helpers.async_bulk`
+        :func:`~opensearchpy.helpers.async_bulk`
     """
     target_client = client if target_client is None else target_client
     docs = async_scan(

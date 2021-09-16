@@ -343,7 +343,7 @@ class TestTransport(TestCase):
         self.assertEqual(1, len(t.connection_pool.connections))
         self.assertEqual("http://1.1.1.1:123", t.get_connection().host)
 
-    @patch("opensearch.transport.Transport.sniff_hosts")
+    @patch("opensearchpy.transport.Transport.sniff_hosts")
     def test_sniff_on_fail_failing_does_not_prevent_retires(self, sniff_hosts):
         sniff_hosts.side_effect = [TransportError("sniff failed")]
         t = Transport(
@@ -394,7 +394,7 @@ class TestTransport(TestCase):
             {"host": "somehost.tld", "port": 123},
         )
 
-    @patch("opensearch.transport.Transport.sniff_hosts")
+    @patch("opensearchpy.transport.Transport.sniff_hosts")
     def test_sniffing_disabled_on_cloud_instances(self, sniff_hosts):
         t = Transport(
             [{}],

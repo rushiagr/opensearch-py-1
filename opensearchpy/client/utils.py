@@ -40,7 +40,7 @@ SKIP_IN_PATH = (None, "", b"", [], ())
 def _normalize_hosts(hosts):
     """
     Helper function to transform hosts argument to
-    :class:`~opensearch.OpenSearch` to a list of dicts.
+    :class:`~opensearchpy.OpenSearch` to a list of dicts.
     """
     # if hosts are empty, just defer to defaults down the line
     if hosts is None:

@@ -582,7 +582,7 @@ class TestScan(object):
                     scroll_mock.assert_not_called()
                     clear_mock.assert_not_called()
 
-    @patch("opensearch._async.helpers.logger")
+    @patch("opensearchpy._async.helpers.logger")
     async def test_logger(self, logger_mock, async_client, scan_teardown):
         bulk = []
         for x in range(4):

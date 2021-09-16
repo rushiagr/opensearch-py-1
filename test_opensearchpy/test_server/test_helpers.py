@@ -550,7 +550,7 @@ class TestScan(OpenSearchTestCase):
             )
             self.assertEqual(client_mock.scroll.call_args[1]["sort"], "asc")
 
-    @patch("opensearch.helpers.actions.logger")
+    @patch("opensearchpy.helpers.actions.logger")
     def test_logger(self, logger_mock):
         bulk = []
         for x in range(4):

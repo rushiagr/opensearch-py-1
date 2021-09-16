@@ -380,7 +380,7 @@ class TestTransport:
         assert 1 == len(t.connection_pool.connections)
         assert "http://1.1.1.1:123" == t.get_connection().host
 
-    @patch("opensearch._async.transport.AsyncTransport.sniff_hosts")
+    @patch("opensearchpy._async.transport.AsyncTransport.sniff_hosts")
     async def test_sniff_on_fail_failing_does_not_prevent_retires(self, sniff_hosts):
         sniff_hosts.side_effect = [TransportError("sniff failed")]
         t = AsyncTransport(
@@ -436,7 +436,7 @@ class TestTransport:
             "port": 123,
         }
 
-    @patch("opensearch._async.transport.AsyncTransport.sniff_hosts")
+    @patch("opensearchpy._async.transport.AsyncTransport.sniff_hosts")
     async def test_sniffing_disabled_on_cloud_instances(self, sniff_hosts):
         t = AsyncTransport(
             [{}],
