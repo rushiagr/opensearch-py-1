@@ -26,7 +26,7 @@
 
 import asyncio
 
-import opensearch
+import opensearchpy
 import pytest
 
 from opensearchpy.helpers.test import CA_CERTS, OPENSEARCH_URL
