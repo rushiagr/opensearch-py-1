@@ -110,15 +110,15 @@ def run_all(argv=None):
         ignores = []
         # Python 3.6+ is required for async
         if sys.version_info < (3, 6):
-            ignores.append("test_opensearch/test_async/")
+            ignores.append("test_opensearchpy/test_async/")
 
         # GitHub Actions, run non-server tests
         if "GITHUB_ACTION" in environ:
             ignores.extend(
                 [
-                    "test_opensearch/test_server/",
-                    "test_opensearch/test_server_secured/",
-                    "test_opensearch/test_async/test_server/",
+                    "test_opensearchpy/test_server/",
+                    "test_opensearchpy/test_server_secured/",
+                    "test_opensearchpy/test_async/test_server/",
                 ]
             )
 
@@ -129,8 +129,8 @@ def run_all(argv=None):
                 argv.append(join(test_dir, "test_server_secured"))
                 ignores.extend(
                     [
-                        "test_opensearch/test_server/",
-                        "test_opensearch/test_async/test_server/",
+                        "test_opensearchpy/test_server/",
+                        "test_opensearchpy/test_async/test_server/",
                     ]
                 )
             else:
@@ -139,7 +139,7 @@ def run_all(argv=None):
                     argv.append(join(test_dir, "test_async/test_server"))
                 ignores.extend(
                     [
-                        "test_opensearch/test_server_secured/",
+                        "test_opensearchpy/test_server_secured/",
                     ]
                 )
 
