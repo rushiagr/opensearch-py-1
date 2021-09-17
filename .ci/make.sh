@@ -136,9 +136,8 @@ if [[ "$CMD" == "assemble" ]]; then
   # Verify that there are dists in .ci/output
 	if compgen -G ".ci/output/*" > /dev/null; then
 
-	  # Tarball everything up in .ci/output
+	# Tarball everything up in .ci/output
     cd $repo/.ci/output && tar -czvf opensearch-py-$VERSION.tar.gz * && cd -
-
 		echo -e "\033[32;1mTARGET: successfully assembled client v$VERSION\033[0m"
 		exit 0
 	else
