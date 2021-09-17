@@ -45,7 +45,6 @@ module_dir = package_name.replace('-', '')
 packages = [
     package
     for package in find_packages(where=".", exclude=("test_opensearchpy*",))
-    if package == package_name or package.startswith(package_name + ".")
     if package == module_dir or package.startswith(module_dir + ".")
 ]
 
