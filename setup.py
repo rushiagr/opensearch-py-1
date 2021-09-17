@@ -33,6 +33,9 @@ from setuptools import find_packages, setup
 package_name = "opensearch-py"
 base_dir = abspath(dirname(__file__))
 
+print("package name and base dir is", package_name, base_dir)
+import os
+print("listing base dir", os.listdir())
 with open(join(base_dir, package_name.replace("-", ""), "_version.py")) as f:
     package_version = re.search(
         r"__versionstr__\s+=\s+[\"\']([^\"\']+)[\"\']", f.read()
