@@ -174,6 +174,12 @@ def main():
     run("git", "checkout", "--", "setup.py", "opensearchpy/")
     run("rm", "-rf", "build/", "dist/*", "*.egg-info", ".eggs")
 
+    print("testing testing testing")
+    run("python", "-m", "pip", "install", "--upgrade", "pip")
+    run("python", "-m", "pip", "install", "--upgrade", "build")
+    run("python", "-m", "build")
+    run("rm", "-rf", "build/", "dist/*", "*.egg-info", ".eggs")
+
     # Grab the major version to be used as a suffix.
     version_path = os.path.join(base_dir, "opensearchpy/_version.py")
     with open(version_path) as f:
