@@ -41,7 +41,7 @@ base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 tmp_dir = None
 
 
-@contextlib.contextmanager
+# @contextlib.contextmanager
 def set_tmp_dir():
     global tmp_dir
     tmp_dir = tempfile.mkdtemp()
