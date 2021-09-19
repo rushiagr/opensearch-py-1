@@ -38,6 +38,19 @@ import sys
 import tempfile
 import time
 
+from subprocess import check_output, CalledProcessError
+
+from tempfile import TemporaryFile
+
+def get_out(*args):
+    with TemporaryFile() as t:
+        try:
+            out = check_output(args, stderr=t)
+            return  0, out
+        except CalledProcessError as e:
+            t.seek(0)
+            return e.returncode, t.read()
+
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 tmp_dir = None
 
@@ -160,10 +173,12 @@ def test_dist(dist):
             os.path.join(base_dir, "test_opensearchpy/test_types/aliased_types.py"),
         )
 
+    print(get_out(venv_python, "-m", "pip", 'freeze'))
     # Uninstall the dist, see that we can't import things anymore
     run(venv_python, "-m", "pip", "uninstall", "--yes", dist_name)
     print('sleeping')
-    time.sleep(1000000)
+    print(get_out(venv_python, "-c", "locals()"))
+
     run(
         venv_python,
         "-c",
