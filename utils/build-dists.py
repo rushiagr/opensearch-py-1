@@ -69,105 +69,107 @@ def run(*argv, expect_exit_code=0):
 
 
 def test_dist(dist):
-    with set_tmp_dir() as tmp_dir:
-        dist_name = re.match(
-            r"^(opensearchpy\d*)-",
-            os.path.basename(dist)
-            .replace("opensearch-py", "opensearchpy")
-            .replace("opensearch_py", "opensearchpy"),
-        ).group(1)
+    #with set_tmp_dir() as tmp_dir:
+    tmp_dir = set_tmp_dir()
 
-        # Build the venv and install the dist
-        run("python", "-m", "venv", os.path.join(tmp_dir, "venv"))
-        venv_python = os.path.join(tmp_dir, "venv/bin/python")
-        run(venv_python, "-m", "pip", "install", "-U", "pip", "mypy")
-        run(venv_python, "-m", "pip", "install", dist)
+    dist_name = re.match(
+        r"^(opensearchpy\d*)-",
+        os.path.basename(dist)
+        .replace("opensearch-py", "opensearchpy")
+        .replace("opensearch_py", "opensearchpy"),
+    ).group(1)
 
-        # Test the sync namespaces
-        run(venv_python, "-c", f"from {dist_name} import OpenSearch")
+    # Build the venv and install the dist
+    run("python", "-m", "venv", os.path.join(tmp_dir, "venv"))
+    venv_python = os.path.join(tmp_dir, "venv/bin/python")
+    run(venv_python, "-m", "pip", "install", "-U", "pip", "mypy")
+    run(venv_python, "-m", "pip", "install", dist)
+
+    # Test the sync namespaces
+    run(venv_python, "-c", f"from {dist_name} import OpenSearch")
+    run(
+        venv_python,
+        "-c",
+        f"from {dist_name}.helpers import scan, bulk, streaming_bulk, reindex",
+    )
+    run(venv_python, "-c", f"from {dist_name} import OpenSearch")
+    run(
+        venv_python,
+        "-c",
+        f"from {dist_name}.helpers import scan, bulk, streaming_bulk, reindex",
+    )
+
+    # Ensure that async is not available yet
+    run(
+        venv_python,
+        "-c",
+        f"from {dist_name} import AsyncOpenSearch",
+        expect_exit_code=256,
+    )
+    run(
+        venv_python,
+        "-c",
+        f"from {dist_name}.helpers import async_scan, async_bulk, async_streaming_bulk, async_reindex",
+        expect_exit_code=256,
+    )
+
+    # Install aiohttp and see that async is now available
+    run(venv_python, "-m", "pip", "install", "aiohttp")
+    run(venv_python, "-c", f"from {dist_name} import AsyncOpenSearch")
+    run(
+        venv_python,
+        "-c",
+        f"from {dist_name}.helpers import async_scan, async_bulk, async_streaming_bulk, async_reindex",
+    )
+
+    # Only need to test 'async_types' for non-aliased package
+    # since 'aliased_types' tests both async and sync.
+    if dist_name == "opensearchpy":
+        run(
+            venv_python,
+            "-m",
+            "mypy",
+            "--strict",
+            os.path.join(base_dir, "test_opensearchpy/test_types/async_types.py"),
+        )
+
+    # Ensure that the namespaces are correct for the dist
+    for suffix in ("", "1", "2", "5", "6", "7", "8", "9", "10"):
+        distx_name = f"opensearchpy{suffix}"
         run(
             venv_python,
             "-c",
-            f"from {dist_name}.helpers import scan, bulk, streaming_bulk, reindex",
+            f"import {distx_name}",
+            expect_exit_code=256 if distx_name != dist_name else 0,
         )
-        run(venv_python, "-c", f"from {dist_name} import OpenSearch")
+
+    # Check that sync types work for 'opensearchpy' and
+    # that aliased types work for 'opensearchpyX'
+    if dist_name == "opensearchpy":
         run(
             venv_python,
-            "-c",
-            f"from {dist_name}.helpers import scan, bulk, streaming_bulk, reindex",
+            "-m",
+            "mypy",
+            "--strict",
+            os.path.join(base_dir, "test_opensearchpy/test_types/sync_types.py"),
         )
-
-        # Ensure that async is not available yet
+    else:
         run(
             venv_python,
-            "-c",
-            f"from {dist_name} import AsyncOpenSearch",
-            expect_exit_code=256,
-        )
-        run(
-            venv_python,
-            "-c",
-            f"from {dist_name}.helpers import async_scan, async_bulk, async_streaming_bulk, async_reindex",
-            expect_exit_code=256,
+            "-m",
+            "mypy",
+            "--strict",
+            os.path.join(base_dir, "test_opensearchpy/test_types/aliased_types.py"),
         )
 
-        # Install aiohttp and see that async is now available
-        run(venv_python, "-m", "pip", "install", "aiohttp")
-        run(venv_python, "-c", f"from {dist_name} import AsyncOpenSearch")
-        run(
-            venv_python,
-            "-c",
-            f"from {dist_name}.helpers import async_scan, async_bulk, async_streaming_bulk, async_reindex",
-        )
-
-        # Only need to test 'async_types' for non-aliased package
-        # since 'aliased_types' tests both async and sync.
-        if dist_name == "opensearchpy":
-            run(
-                venv_python,
-                "-m",
-                "mypy",
-                "--strict",
-                os.path.join(base_dir, "test_opensearchpy/test_types/async_types.py"),
-            )
-
-        # Ensure that the namespaces are correct for the dist
-        for suffix in ("", "1", "2", "5", "6", "7", "8", "9", "10"):
-            distx_name = f"opensearchpy{suffix}"
-            run(
-                venv_python,
-                "-c",
-                f"import {distx_name}",
-                expect_exit_code=256 if distx_name != dist_name else 0,
-            )
-
-        # Check that sync types work for 'opensearchpy' and
-        # that aliased types work for 'opensearchpyX'
-        if dist_name == "opensearchpy":
-            run(
-                venv_python,
-                "-m",
-                "mypy",
-                "--strict",
-                os.path.join(base_dir, "test_opensearchpy/test_types/sync_types.py"),
-            )
-        else:
-            run(
-                venv_python,
-                "-m",
-                "mypy",
-                "--strict",
-                os.path.join(base_dir, "test_opensearchpy/test_types/aliased_types.py"),
-            )
-
-        # Uninstall the dist, see that we can't import things anymore
-        run(venv_python, "-m", "pip", "uninstall", "--yes", dist_name)
-        run(
-            venv_python,
-            "-c",
-            f"from {dist_name} import OpenSearch",
-            expect_exit_code=256,
-        )
+    # Uninstall the dist, see that we can't import things anymore
+    run(venv_python, "-m", "pip", "uninstall", "--yes", dist_name)
+    run(
+        venv_python,
+        "-c",
+        f"from {dist_name} import OpenSearch",
+        expect_exit_code=256,
+    )
 
 
 def main():
