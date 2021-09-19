@@ -45,7 +45,7 @@ tmp_dir = None
 def set_tmp_dir():
     global tmp_dir
     tmp_dir = tempfile.mkdtemp()
-    yield tmp_dir
+    return tmp_dir
     shutil.rmtree(tmp_dir)
     tmp_dir = None
 
