@@ -36,6 +36,7 @@ import shlex
 import shutil
 import sys
 import tempfile
+import time
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 tmp_dir = None
@@ -46,9 +47,6 @@ def set_tmp_dir():
     global tmp_dir
     tmp_dir = tempfile.mkdtemp()
     return tmp_dir
-    shutil.rmtree(tmp_dir)
-    tmp_dir = None
-
 
 def run(*argv, expect_exit_code=0):
     global tmp_dir
@@ -164,6 +162,8 @@ def test_dist(dist):
 
     # Uninstall the dist, see that we can't import things anymore
     run(venv_python, "-m", "pip", "uninstall", "--yes", dist_name)
+    print('sleeping')
+    time.sleep(1000000)
     run(
         venv_python,
         "-c",
